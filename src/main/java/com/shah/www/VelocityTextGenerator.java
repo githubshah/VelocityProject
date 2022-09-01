@@ -1,5 +1,6 @@
 package com.shah.www;
 
+import com.sun.istack.internal.NotNull;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -30,14 +31,5 @@ public class VelocityTextGenerator {
         writer.close();
 
         System.out.println(writer);
-    }
-
-    private static void loadInputTemplateFromProjectResourceFolder(VelocityEngine velocityEngine) {
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
-    }
-
-    private static void loadInputTemplateFromFileLocation(VelocityEngine velocityEngine) {
-        velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, "D:\\codebase\\JavaTest\\src\\main\\resources");
     }
 }
