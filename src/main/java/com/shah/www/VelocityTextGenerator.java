@@ -1,47 +1,35 @@
 package com.shah.www;
 
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
 import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
+import java.io.StringWriter;
 
-public class VelocityHtmlGenerator {
-
-    static boolean loadFromResource = true;
-    static boolean loadFromFileLocation = true;
-    static String inputTemplate = "html_example.vm";
-    static String message = "Hello World!";
-    static String outputFile = "helloworld.html";
+public class VelocityTextGenerator {
 
     public static void main(String[] args) throws IOException {
 
         VelocityEngine velocityEngine = new VelocityEngine();
-
-        if (loadFromResource) {
-            loadInputTemplateFromProjectResourceFolder(velocityEngine);
-        } else if (loadFromFileLocation) {
-            loadInputTemplateFromFileLocation(velocityEngine);
-        }
-
         velocityEngine.init();
 
         VelocityContext context = new VelocityContext();
-        context.put("message", message);
+        context.put("name", "Mark");
+        context.put("invoiceNumber", "42123");
+        context.put("dueDate", "June 6, 2009");
 
-        Writer writer = new FileWriter(new File(outputFile));
+        String template = "Hello $name. Please find attached invoice" +
+                " $invoiceNumber which is due on $dueDate.";
+        StringWriter writer = new StringWriter();
+        Velocity.evaluate(context, writer, "TemplateName", template);
 
-        Template t = velocityEngine.getTemplate(inputTemplate);
-        t.merge(context, writer);
         writer.flush();
         writer.close();
 
-        System.out.println("Generated " + outputFile);
+        System.out.println(writer);
     }
 
     private static void loadInputTemplateFromProjectResourceFolder(VelocityEngine velocityEngine) {
